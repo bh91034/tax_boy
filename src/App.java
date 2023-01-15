@@ -17,7 +17,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  * POI LIB
- *
+ * Reference :
+ *  - https://myhappyman.tistory.com/198
+ *  - https://yangsosolife.tistory.com/7
  */
 public class App {
 	public static void main(String[] args) {
