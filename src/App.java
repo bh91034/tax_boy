@@ -24,12 +24,18 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class App {
     public static void main(String[] args) {
         String path = "test_data/";
-        String fileName = "test.xlsx";
 
-        List<Map<Object, Object>> excelData = readExcel(path, fileName);
+        File folder = new File(path);
+        File[] listOfFiles = folder.listFiles();
 
-        for (int i = 0; i < excelData.size(); i++) {
-            System.out.println(excelData.get(i));
+        for (int i = 0; i < listOfFiles.length; i++) {
+            if (listOfFiles[i].isFile()) {
+                System.out.println("File : " + listOfFiles[i].getName());
+                List<Map<Object, Object>> excelData = readExcel(path, listOfFiles[i].getName());
+                for (int idx = 0; idx < excelData.size(); idx++) {
+                    System.out.println(excelData.get(idx));
+                }
+            }
         }
     }
 
@@ -76,8 +82,7 @@ public class App {
         for (int z = 0; z < sheets; z++) {
             Sheet sheet = workbook.getSheetAt(z);
             int rows = sheet.getLastRowNum();
-
-            if (firstRowAsTitle && rows <= 1) {
+            if (firstRowAsTitle && rows <= 0) {
                 continue;
             } else {
                 getRow(sheet, rows, list, firstRowAsTitle);
