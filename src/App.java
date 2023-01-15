@@ -52,7 +52,7 @@ public class App {
 
             if (workbook != null) {
                 int sheets = workbook.getNumberOfSheets();
-                getSheet(workbook, sheets, list);
+                getSheet(workbook, sheets, list, true);
             }
 
         } catch (FileNotFoundException e) {
@@ -72,26 +72,55 @@ public class App {
         return list;
     }
 
-    public static void getSheet(Workbook workbook, int sheets, List<Map<Object, Object>> list) {
+    public static void getSheet(Workbook workbook, int sheets, List<Map<Object, Object>> list, boolean firstRowAsTitle) {
         for (int z = 0; z < sheets; z++) {
             Sheet sheet = workbook.getSheetAt(z);
             int rows = sheet.getLastRowNum();
-            getRow(sheet, rows, list);
-        }
-    }
 
-    public static void getRow(Sheet sheet, int rows, List<Map<Object, Object>> list) {
-        for (int i = 0; i <= rows; i++) {
-            Row row = sheet.getRow(i);
-            if (row != null) {
-                int cells = row.getPhysicalNumberOfCells();
-                list.add(getCell(row, cells));
+            if (firstRowAsTitle && rows <= 1) {
+                continue;
+            } else {
+                getRow(sheet, rows, list, firstRowAsTitle);
             }
         }
     }
 
-    public static Map<Object, Object> getCell(Row row, int cells) {
-        String[] columns = { "column1", "column2", "column3", "column4", "column5", "column6" };
+    public static void getRow(Sheet sheet, int rows, List<Map<Object, Object>> list, boolean firstRowAsTitle) {
+        String[] columns = null;
+        for (int i = 0; i <= rows; i++) {
+            Row row = sheet.getRow(i);
+            if (row != null) {
+                int cells = row.getPhysicalNumberOfCells();
+                Map<Object, Object> cellMap = getCell(row, cells, columns);
+                if (firstRowAsTitle && i == 0) {
+                    columns = parseColumnTitle(cellMap);
+                } else {
+                    list.add(cellMap);
+                }
+            }
+        }
+    }
+
+    private static String[] parseColumnTitle(Map<Object, Object> cellMap) {
+        String[] values = new String[cellMap.size()];
+        int index = 0;
+        for (Map.Entry<Object, Object> mapEntry : cellMap.entrySet()) {
+            String key = (String)mapEntry.getKey();
+            int idx = Integer.valueOf(key.replaceAll("[^0-9]", ""));
+            values[idx-1] = (String)mapEntry.getValue();
+            index++;
+        }
+        return values;
+    }
+
+    public static Map<Object, Object> getCell(Row row, int cells, String[] columns) {
+        if (columns == null) {
+            columns = new String[cells];
+            for (int i = 0; i< cells; i++) {
+                columns[i] = "column"+(i+1);
+            }
+        }
+
         Map<Object, Object> map = new HashMap<>();
         for (int j = 0; j < cells; j++) {
             if (j >= columns.length) {
