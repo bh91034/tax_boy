@@ -23,7 +23,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class App {
     public static void main(String[] args) {
-        String path = "C:/project/tax_helper/test_data/";
+        String path = "test_data/";
         String fileName = "test.xlsx";
 
         List<Map<Object, Object>> excelData = readExcel(path, fileName);
