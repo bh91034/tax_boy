@@ -1,0 +1,1 @@
+java -cp ./output;./poi-4.1.2/poi-4.1.2.jar;./poi-4.1.2/commons-math3-3.6.1.jar;./poi-4.1.2/poi-ooxml-4.1.2.jar;./poi-4.1.2/poi-ooxml-schemas-4.1.2.jar;./poi-4.1.2/xmlbeans-3.1.0.jar;./poi-4.1.2/commons-collections4-4.4.jar;./poi-4.1.2/commons-compress-1.19.jar App

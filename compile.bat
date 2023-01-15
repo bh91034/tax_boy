@@ -1,0 +1,1 @@
+javac -classpath ./poi-4.1.2/poi-4.1.2.jar;./poi-4.1.2/commons-math3-3.6.1.jar;./poi-4.1.2/poi-ooxml-4.1.2.jar -d output ./src/App.java
